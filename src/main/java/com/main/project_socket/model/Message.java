@@ -1,4 +1,4 @@
-package com.main.project_socket.entities;
+package com.main.project_socket.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
