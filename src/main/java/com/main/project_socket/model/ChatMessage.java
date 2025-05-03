@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message {
+public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
