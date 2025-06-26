@@ -26,8 +26,9 @@ public class ProfileServices implements ProfileInterfaceService {
     }
 
     @Override
-    public Boolean removeProfile(String email) {
-        Optional<Profile> profile = Optional.ofNullable(repository.findByEmail(email));
+    public Boolean removeProfile(String email) throws Exception{
+        Optional<Profile> profile = Optional.ofNullable(Optional.ofNullable(repository.findByEmail(email))
+                .orElseThrow(() -> new UserPrincipalNotFoundException("Profile not found with email: " + email)));
 
         if (profile.isPresent()) {
             repository.delete(profile.get());
