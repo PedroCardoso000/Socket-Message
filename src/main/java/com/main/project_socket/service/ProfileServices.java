@@ -2,7 +2,9 @@ package com.main.project_socket.service;
 
 import com.main.project_socket.entity.Profile;
 import com.main.project_socket.interfaces.ProfileInterfaceService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProfileServices implements ProfileInterfaceService {
     @Override
     public Profile createdProfile(String name, String email, String phone) {
