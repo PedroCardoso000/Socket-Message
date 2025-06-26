@@ -1,10 +1,15 @@
 package com.main.project_socket.service;
 
 import com.main.project_socket.entity.Profile;
+import com.main.project_socket.entity.adpter.ProfileAdapter;
+import com.main.project_socket.entity.dto.ProfileBody;
 import com.main.project_socket.interfaces.ProfileInterfaceService;
 import com.main.project_socket.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.Optional;
 
 @Service
 public class ProfileServices implements ProfileInterfaceService {
@@ -12,19 +17,39 @@ public class ProfileServices implements ProfileInterfaceService {
     @Autowired
     private ProfileRepository repository;
 
-    @Override
-    public Profile createdProfile(String name, String email, String phone) {
+    private final ProfileAdapter profileAdapter = new ProfileAdapter();
 
-        return null;
+
+    @Override
+    public Profile createdProfile(ProfileBody body) {
+        return repository.save(profileAdapter.getProfileEntity(body));
     }
 
     @Override
     public Boolean removeProfile(String email) {
-        return null;
+        Optional<Profile> profile = Optional.ofNullable(repository.findByEmail(email));
+
+        if (profile.isPresent()) {
+            repository.delete(profile.get());
+            return true;
+        }
+
+        return false;
     }
 
     @Override
-    public Profile updateProfile(String setType, String value, String email) {
-        return null;
+    public Profile updateProfile(String setType, String value, String email) throws Exception {
+        Profile existingProfile = Optional.ofNullable(repository.findByEmail(email))
+                .orElseThrow(() -> new UserPrincipalNotFoundException("Profile not found with email: " + email));
+
+        switch (setType.toLowerCase()) {
+            case "name" -> existingProfile.setName(value);
+            case "email" -> existingProfile.setEmail(value);
+            case "phone" -> existingProfile.setPhone(value);
+            default -> throw new IllegalArgumentException("Invalid field type: " + setType);
+        }
+
+        return repository.save(existingProfile);
     }
+
 }

@@ -7,4 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProfileRepository  extends JpaRepository<Profile, Long> {
+
+    // Method to find a profile by email
+    Profile findByEmail(String email);
+
+    // Method to delete a profile by email
+    void deleteByEmail(String email);
 }
