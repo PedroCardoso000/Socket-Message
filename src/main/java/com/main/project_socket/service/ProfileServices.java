@@ -17,8 +17,8 @@ public class ProfileServices implements ProfileInterfaceService {
 
     @Autowired
     private ProfileRepository repository;
-
-    private final ProfileAdapter profileAdapter = new ProfileAdapter();
+    @Autowired
+    private ProfileAdapter profileAdapter;
 
 
     @Override
