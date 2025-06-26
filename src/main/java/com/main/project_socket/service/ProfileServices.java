@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,4 +54,7 @@ public class ProfileServices implements ProfileInterfaceService {
         return repository.save(existingProfile);
     }
 
+    public List<Profile> getAllProfiles() {
+        return repository.findAll();
+    }
 }
