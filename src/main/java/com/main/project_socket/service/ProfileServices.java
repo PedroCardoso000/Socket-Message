@@ -17,8 +17,12 @@ public class ProfileServices implements ProfileInterfaceService {
 
     @Autowired
     private ProfileRepository repository;
-    @Autowired
-    private ProfileAdapter profileAdapter;
+
+    private final ProfileAdapter profileAdapter;
+
+    public ProfileServices(ProfileAdapter profileAdapter) {
+        this.profileAdapter = profileAdapter;
+    }
 
 
     @Override
@@ -57,4 +61,5 @@ public class ProfileServices implements ProfileInterfaceService {
     public List<Profile> getAllProfiles() {
         return repository.findAll();
     }
+
 }
