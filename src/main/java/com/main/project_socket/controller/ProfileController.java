@@ -8,23 +8,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller("/profile")
+@RestController
+@RequestMapping("/profile")
 public class ProfileController {
     @Autowired
     private ProfileServices profileServices;
 
     @PostMapping("/create")
-    public ResponseEntity<Profile> createProfile(ProfileBody body) {
+    public ResponseEntity<Profile> createProfile(@RequestBody ProfileBody body) {
         Profile createdProfile = profileServices.createdProfile(body);
         return ResponseEntity.ok(createdProfile);
     }
     @PostMapping("/delete")
-    public ResponseEntity<Boolean> deleteProfile(String email) {
+    public ResponseEntity<Boolean> deleteProfile(@RequestBody String email) {
         try {
             return profileServices.removeProfile(email)
                     ? ResponseEntity.status(HttpStatus.OK).build()
@@ -34,7 +34,11 @@ public class ProfileController {
         }
     }
     @PostMapping("/update")
-    public ResponseEntity<Profile> updateProfile(String setType, String value, String email) {
+    public ResponseEntity<Profile> updateProfile(
+            @RequestParam String setType,
+            @RequestParam String value,
+            @RequestParam String email) {
+
         try {
             Profile updatedProfile = profileServices.updateProfile(setType, value, email);
             return ResponseEntity.ok(updatedProfile);
@@ -42,6 +46,7 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
     @GetMapping
     public ResponseEntity<List<Profile>> defaultEndpoint() {
         return ResponseEntity.status(HttpStatus.OK)
