@@ -2,7 +2,9 @@ package com.main.project_socket.entity.adpter;
 
 import com.main.project_socket.entity.Profile;
 import com.main.project_socket.entity.dto.ProfileBody;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProfileAdapter {
 
     public Profile getProfileEntity(ProfileBody body){

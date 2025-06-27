@@ -1,10 +1,10 @@
 package com.main.project_socket.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
+@Entity(name = "profile")
+@Table
 @Getter
 @Setter
 @AllArgsConstructor

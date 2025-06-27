@@ -17,12 +17,8 @@ public class ProfileServices implements ProfileInterfaceService {
 
     @Autowired
     private ProfileRepository repository;
-
-    private final ProfileAdapter profileAdapter;
-
-    public ProfileServices(ProfileAdapter profileAdapter) {
-        this.profileAdapter = profileAdapter;
-    }
+    @Autowired
+    private ProfileAdapter profileAdapter;
 
 
     @Override
