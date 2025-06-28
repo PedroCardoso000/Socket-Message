@@ -1,20 +1,17 @@
 package com.main.project_socket.controller;
 
-import com.main.project_socket.model.ChatMessage;
-import com.main.project_socket.service.MessagePublisher;
+import com.main.project_socket.entity.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class ChatController {
-    private final MessagePublisher publisher;
 
-    public ChatController(MessagePublisher publisher) {
-        this.publisher = publisher;
-    }
-
-    @MessageMapping("/chat") // Cliente envia para /app/chat
-    public void handleMessage(ChatMessage message) {
-        publisher.publish(message); // envia para RabbitMQ
+    @MessageMapping("/chat")
+    @SendTo("/topic/messages")
+    public ChatMessage send(ChatMessage message) {
+        return message;
     }
 }
+
