@@ -1,52 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
     <title>WebSocket Chat</title>
     <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
+        .chat-container {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        #userLabel {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        #message {
+            width: calc(100% - 100px);
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        #sendBtn {
+            padding: 10px 16px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #sendBtn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        #messages {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        #messages li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #messages li:last-child {
+            border-bottom: none;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .footer-links a {
+            color: #333;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<h2>WebSocket Chat</h2>
-<input type="text" id="name" placeholder="Your name">
-<input type="text" id="message" placeholder="Message">
-<button id="sendBtn" onclick="sendMessage()" disabled>Send</button>
-<ul id="messages"></ul>
+<div class="chat-container">
+    <h2>💬 Chat WebSocket</h2>
+    <p>Logado como: <span id="userLabel"></span></p>
+
+    <div style="display: flex; gap: 10px;">
+        <input type="text" id="message" placeholder="Digite sua mensagem...">
+        <button id="sendBtn" onclick="sendMessage()" disabled>Enviar</button>
+    </div>
+
+    <ul id="messages"></ul>
+
+    <div class="footer-links">
+        <a href="/about.html">Sobre</a> |
+        <a href="/login.html">Sair</a>
+    </div>
+</div>
 
 <script>
     let stompClient = null;
+    const username = sessionStorage.getItem('username');
+
+    if (!username) {
+        alert("Usuário não logado. Voltando para login...");
+        window.location.href = "/login.html";
+    }
+
+    document.getElementById('userLabel').textContent = username;
 
     function connect() {
-        const socket = new SockJS('/ws'); // important: match Spring endpoint `/ws`
+        const socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-
-            // Enable the button only after connection is established
+            console.log('Conectado: ' + frame);
             document.getElementById("sendBtn").disabled = false;
 
             stompClient.subscribe('/topic/messages', function (messageOutput) {
                 const body = JSON.parse(messageOutput.body);
                 const li = document.createElement('li');
-                li.textContent = body.from + ": " + body.text;
+                li.textContent = `${body.from}: ${body.text}`;
                 document.getElementById("messages").appendChild(li);
+                document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
             });
-        }, function (error) {
-            console.error("STOMP connection error:", error);
         });
     }
 
     function sendMessage() {
-        const name = document.getElementById("name").value;
         const message = document.getElementById("message").value;
-
-        if (!stompClient || !stompClient.connected) {
-            alert("Not connected to WebSocket yet!");
-            return;
-        }
-
-        stompClient.send("/app/chat", {}, JSON.stringify({from: name, text: message}));
+        if (!message.trim()) return;
+        stompClient.send("/app/chat", {}, JSON.stringify({from: username, text: message}));
         document.getElementById("message").value = "";
     }
 
