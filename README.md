@@ -1,25 +1,22 @@
-#Spring Boot WebSocket Chat Application
+# Spring Boot WebSocket Chat Application
 
-✨ Visão Geral
+✨ **Visão Geral**
 
-#Este é um projeto de exemplo de aplicação Spring Boot utilizando WebSocket com STOMP, Spring Security, validações e 4Buckets (camadas):
+Este é um projeto de exemplo de aplicação **Spring Boot** utilizando:
 
-Controller
+- **WebSocket** com **STOMP**
+- **Spring Security**
+- **Validações**
+- Arquitetura em **4 Buckets** (camadas):
+  - `Controller`
+  - `Service`
+  - `Repository`
+  - `Model`
 
-Service
+### O projeto inclui:
 
-Repository
-
-Model
-
-#O projeto inclui:
-
-Login e autenticação com Spring Security
-
-Permissões de acesso
-
-WebSocket com autenticação
-
-Validação de campos e tratamento de erros
-
-Front-end em HTML (estático)
+- ✅ Login e autenticação com Spring Security  
+- ✅ Permissões de acesso por perfil/role  
+- ✅ WebSocket com autenticação  
+- ✅ Validação de campos e tratamento global de erros  
+- ✅ Front-end estático em HTML (pasta `/static`)
