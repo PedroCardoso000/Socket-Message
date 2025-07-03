@@ -23,6 +23,7 @@ public class ProfileServices implements ProfileInterfaceService {
 
     @Override
     public Profile createdProfile(ProfileBody body) {
+
         return repository.save(profileAdapter.getProfileEntity(body));
     }
 
