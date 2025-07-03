@@ -3,6 +3,7 @@ package com.main.project_socket.controller;
 import com.main.project_socket.entity.Profile;
 import com.main.project_socket.entity.dto.ProfileBody;
 import com.main.project_socket.service.ProfileServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class ProfileController {
     private ProfileServices profileServices;
 
     @PostMapping("/create")
-    public ResponseEntity<Profile> createProfile(@RequestBody ProfileBody body) {
+    public ResponseEntity<Profile> createProfile(@RequestBody @Valid ProfileBody body) {
         Profile createdProfile = profileServices.createdProfile(body);
         return ResponseEntity.ok(createdProfile);
     }
