@@ -17,4 +17,6 @@ public record ProfileBody(
     // This record class is used to encapsulate the profile data
     // It provides a concise way to define immutable data structures
     // with named fields.
+    // The annotations ensure that the data meets certain validation criteria
+    // when creating an instance of this record.
 }
