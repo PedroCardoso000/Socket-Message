@@ -2,6 +2,8 @@ package com.main.project_socket.security;
 
 
 import com.main.project_socket.entity.Profile;
+import com.main.project_socket.repository.ProfileRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,12 +13,13 @@ import java.util.Collections;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private ProfileRepository repository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Exemplo fixo (troque para seu UserRepository)
-        if ("user".equals(username)) {
-          //  return new Profile("user", "{noop}1234", Collections.emptyList());
-        }
-        throw new UsernameNotFoundException("Usuário não encontrado");
+        return repository.findByProfile(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
     }
 }
