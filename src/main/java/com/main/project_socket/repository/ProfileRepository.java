@@ -16,5 +16,5 @@ public interface ProfileRepository  extends JpaRepository<Profile, Long> {
     // Method to delete a profile by email
     void deleteByEmail(String email);
 
-    Optional<Profile> findByProfile(String name);
+    Optional<Profile> findByName(String name);
 }
