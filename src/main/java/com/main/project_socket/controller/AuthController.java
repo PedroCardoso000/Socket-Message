@@ -39,10 +39,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
 
-            String token = jwtUtil.generateToken(request.getUsername());
+            String token = jwtUtil.generateToken(request.getEmail());
             return ResponseEntity.ok(new JwtResponse(token));
 
         } catch (BadCredentialsException ex) {
@@ -53,7 +53,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         Profile existing = profileRepository.findByEmail(request.getEmail());
-        if (existing == null) {
+        if (existing != null) {
             return ResponseEntity.badRequest().body("Email already in use.");
         }
 

@@ -34,7 +34,7 @@ public class Profile implements UserDetails {
     private String email;
 
     @NotBlank
-    @Size(min = 8, max = 20)
+    @Size(min = 8, max = 100)
     @Column(name = "password")
     private String password;
 
@@ -44,7 +44,7 @@ public class Profile implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // ou retorne as roles se houver
+        return List.of(); // ou retorne as roles se houver
     }
 
     @Override
