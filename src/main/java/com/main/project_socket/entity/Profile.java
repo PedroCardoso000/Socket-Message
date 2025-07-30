@@ -44,7 +44,7 @@ public class Profile implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(); // ou retorne as roles se houver
+        return List.of();
     }
 
     @Override

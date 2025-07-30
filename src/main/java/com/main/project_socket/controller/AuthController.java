@@ -38,13 +38,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
             String token = jwtUtil.generateToken(request.getEmail());
-            return ResponseEntity.ok(new JwtResponse(token));
 
+            return ResponseEntity.ok(new JwtResponse(token));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(401).body("Invalid username or password");
         }
@@ -52,8 +50,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
-        Profile existing = profileRepository.findByEmail(request.getEmail());
-        if (existing != null) {
+        Optional<Profile> existing = profileRepository.findByEmail(request.getEmail());
+        if (existing.isEmpty()) {
             return ResponseEntity.badRequest().body("Email already in use.");
         }
 

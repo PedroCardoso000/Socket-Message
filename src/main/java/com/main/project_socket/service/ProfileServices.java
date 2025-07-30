@@ -28,21 +28,18 @@ public class ProfileServices implements ProfileInterfaceService {
     }
 
     @Override
-    public Boolean removeProfile(String email) throws Exception{
-        Optional<Profile> profile = Optional.ofNullable(Optional.ofNullable(repository.findByEmail(email))
-                .orElseThrow(() -> new UserPrincipalNotFoundException("Profile not found with email: " + email)));
+    public Boolean removeProfile(String email) throws Exception {
+        Profile profile = repository.findByEmail(email)
+                .orElseThrow(() -> new UserPrincipalNotFoundException("Profile not found with email: " + email));
 
-        if (profile.isPresent()) {
-            repository.delete(profile.get());
-            return true;
-        }
-
-        return false;
+        repository.delete(profile);
+        return true;
     }
+
 
     @Override
     public Profile updateProfile(String setType, String value, String email) throws Exception {
-        Profile existingProfile = Optional.ofNullable(repository.findByEmail(email))
+        Profile existingProfile = repository.findByEmail(email)
                 .orElseThrow(() -> new UserPrincipalNotFoundException("Profile not found with email: " + email));
 
         switch (setType.toLowerCase()) {
