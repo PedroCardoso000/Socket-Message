@@ -31,6 +31,9 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .defaultSuccessUrl("/mensagem", true)
                         .permitAll())
+                .rememberMe(remember -> remember
+                        .key("aSecretKeyForHashing")
+                        .tokenValiditySeconds(7 * 24 * 60 * 60)) // 7 days
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
                         .permitAll());
@@ -39,6 +42,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
