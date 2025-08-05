@@ -54,5 +54,8 @@ public class ProfileServices implements ProfileInterfaceService {
     public List<Profile> getAllProfiles() {
         return repository.findAll();
     }
-
+    public Profile getProfileById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Profile not found with ID: " + id));
+    }
 }
