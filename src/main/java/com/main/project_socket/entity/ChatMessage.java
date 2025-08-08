@@ -14,5 +14,4 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class ChatMessage {
     private String from;
-    private String text;
-}
+    private String text;}

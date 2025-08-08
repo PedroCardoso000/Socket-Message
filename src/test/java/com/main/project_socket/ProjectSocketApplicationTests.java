@@ -32,6 +32,8 @@ class ProjectSocketApplicationTests {
 
 		// Assert
 		assertEquals(profile.getName(), result.getName());
-	}
+	};
+
+
 
 }
