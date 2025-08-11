@@ -1,4 +1,4 @@
-package com.main.project_socket.security;
+package com.main.project_socket.service.rabbit;
 
 import com.main.project_socket.config.RabbitMQConfig;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
